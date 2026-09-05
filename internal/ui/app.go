@@ -60,7 +60,7 @@ func Run(st *store.Store) error {
 		return err
 	}
 
-	icon, err := buildIcon(a.mw.DPI())
+	icon, err := loadAppIcon(a.mw.DPI())
 	if err != nil {
 		return err
 	}

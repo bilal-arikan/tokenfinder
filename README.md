@@ -1,3 +1,5 @@
+<img src="docs/icon.png" width="72" align="right" alt="TokenFinder icon">
+
 # TokenFinder
 
 A tiny Windows tray app that keeps your tokens, API keys and passwords in an
@@ -65,7 +67,7 @@ Manual equivalent:
 
 ```powershell
 go install github.com/akavel/rsrc@latest
-rsrc -manifest app.manifest -o rsrc.syso
+rsrc -manifest app.manifest -ico assets\icon.ico -o rsrc.syso
 go build -ldflags "-H windowsgui -s -w" -o TokenFinder.exe .
 ```
 
@@ -115,6 +117,7 @@ value and a free-form multi-line note. The table shows the value masked
 | `internal/autostart` | HKCU `Run` registry entry |
 | `internal/singleinstance` | Named mutex |
 | `app.manifest` | Common Controls v6 + per-monitor DPI awareness |
+| `assets/icon.ico`, `tools/genicon` | App icon (embedded by rsrc); regenerate with `go generate` |
 | `build.ps1` | Build script (exe + SHA256) |
 | `.github/workflows` | CI on push, release build on `v*` tags |
 

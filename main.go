@@ -2,6 +2,8 @@
 // in a DPAPI-encrypted vault and copies them to the clipboard on demand.
 package main
 
+//go:generate go run ./tools/genicon
+
 import (
 	"flag"
 	"os"

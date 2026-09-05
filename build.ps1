@@ -16,8 +16,8 @@ if (-not (Test-Path $rsrc)) {
     go install github.com/akavel/rsrc@latest
 }
 
-# Embed the Common Controls v6 manifest (required by lxn/walk).
-& $rsrc -manifest app.manifest -o rsrc.syso
+# Embed the Common Controls v6 manifest (required by lxn/walk) and the app icon.
+& $rsrc -manifest app.manifest -ico assets\icon.ico -o rsrc.syso
 
 $ldflags = "-H windowsgui -s -w"
 if ($Version -ne "") {
