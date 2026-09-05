@@ -1,0 +1,12 @@
+# Build outputs
+*.exe
+*.syso
+dist/
+
+# Local vaults used for testing
+*.dat
+
+# Editor / OS noise
+.vscode/
+.idea/
+Thumbs.db

@@ -1,0 +1,44 @@
+name: Release
+
+# Manual: builds the exe for an existing tag and attaches it to the release
+# (creating the release if it does not exist). Local releases via build.ps1
+# and `gh release create` remain the primary path; see README "Releasing".
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to build and release (e.g. v1.0.0)"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag }}
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Test
+        run: go test ./...
+
+      - name: Build
+        shell: pwsh
+        run: |
+          $version = "${{ inputs.tag }}".TrimStart("v")
+          .\build.ps1 -Version $version
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ inputs.tag }}
+          files: |
+            dist/TokenFinder.exe
+            dist/SHA256SUMS.txt
+          generate_release_notes: true
