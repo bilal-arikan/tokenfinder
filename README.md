@@ -117,6 +117,14 @@ value and a free-form multi-line note. The table shows the value masked
   go run ./tools/vaultinfo C:\path\to\vault.dat
   ```
 
+- **Entries differ depending on how the app was started.** If TokenFinder is
+  launched from a terminal that belongs to a packaged (MSIX) application, such
+  as an AI assistant or editor installed from the Microsoft Store, Windows
+  redirects its `%APPDATA%` writes into that package's
+  `AppData\Local\Packages\<app>\LocalCache\Roaming\`. You then have two
+  vaults. Start TokenFinder from Explorer, the Start menu or a scheduled task
+  instead, and copy `vault.dat` from the package folder to
+  `%APPDATA%\TokenFinder\` once if needed.
 - **Diagnostics in the status line.** Set `TOKENFINDER_DEBUG=1` before
   starting the app to show vault path, entry counts, current filter and
   command line in the status bar.
