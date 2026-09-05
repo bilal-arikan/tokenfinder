@@ -2,6 +2,7 @@ package ui
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/lxn/walk"
 	. "github.com/lxn/walk/declarative"
@@ -215,6 +216,13 @@ func (a *App) refresh() {
 		a.table.SetCurrentIndex(0)
 	}
 	total := len(a.store.List())
+	switch {
+	case os.Getenv("TOKENFINDER_DEBUG") != "":
+		a.status.SetText(fmt.Sprintf("vault=%s total=%d shown=%d q=%q args=%q", a.store.Path(), total, len(items), a.search.Text(), os.Args))
+	case total == 0:
+		// Make it obvious which file is in use when nothing shows up.
+		a.status.SetText("Vault is empty: " + a.store.Path())
+	}
 	if len(items) == total {
 		a.count.SetText(fmt.Sprintf("%d secrets", total))
 	} else {
@@ -223,7 +231,12 @@ func (a *App) refresh() {
 }
 
 func (a *App) showPanel() {
-	a.refresh()
+	// Always open with a clean filter so a stale search never hides entries.
+	if a.search.Text() != "" {
+		a.search.SetText("") // triggers refresh via OnTextChanged
+	} else {
+		a.refresh()
+	}
 	placeBottomRight(a.mw)
 	a.mw.Show()
 	win.SetForegroundWindow(a.mw.Handle())

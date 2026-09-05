@@ -105,6 +105,25 @@ value and a free-form multi-line note. The table shows the value masked
 - The global hotkey `Ctrl+Alt+T` is registered at start. If another program
   owns it, a tray notification tells you and everything else keeps working.
 
+## Troubleshooting
+
+- **Panel shows "0 secrets" / entries missing.** The status line shows the
+  vault path when the vault is empty. Confirm it is the file you expect and
+  that you are logged in as the same Windows user who created it. To inspect a
+  vault without revealing values:
+
+  ```powershell
+  go run ./tools/vaultinfo                 # default vault
+  go run ./tools/vaultinfo C:\path\to\vault.dat
+  ```
+
+- **Diagnostics in the status line.** Set `TOKENFINDER_DEBUG=1` before
+  starting the app to show vault path, entry counts, current filter and
+  command line in the status bar.
+- **"Cannot open vault" at start.** The file exists but cannot be decrypted:
+  it was created by a different Windows account or machine, or it is not a
+  TokenFinder vault. Move it aside to start fresh.
+
 ## Project layout
 
 | Path | Purpose |
@@ -118,8 +137,9 @@ value and a free-form multi-line note. The table shows the value masked
 | `internal/singleinstance` | Named mutex |
 | `app.manifest` | Common Controls v6 + per-monitor DPI awareness |
 | `assets/icon.ico`, `tools/genicon` | App icon (embedded by rsrc); regenerate with `go generate` |
+| `tools/vaultinfo` | Prints entry names and counts of a vault without values |
 | `build.ps1` | Build script (exe + SHA256) |
-| `.github/workflows` | CI on push, release build on `v*` tags |
+| `.github/workflows` | CI on push, manual release workflow |
 
 ## Releasing
 
